@@ -22,10 +22,10 @@ public record FileOperation(
     }
     
     public boolean requiresPath() {
-        return !"list".equals(type);
+        return !Operation.list.name().equals(type);
     }
     
     public boolean requiresContent() {
-        return "write".equals(type);
+        return Operation.write.name().equals(type);
     }
 }

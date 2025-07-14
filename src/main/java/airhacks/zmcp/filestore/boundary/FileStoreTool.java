@@ -9,6 +9,7 @@ import airhacks.zmcp.filestore.control.Configuration;
 import airhacks.zmcp.filestore.control.FileSystemOperations;
 import airhacks.zmcp.filestore.control.FileValidator;
 import airhacks.zmcp.filestore.entity.FileOperation;
+import airhacks.zmcp.filestore.entity.Operation;
 
 /**
  * ZMCP (https://github.com/AdamBien/zmcp) tool for local file storage operations. Provides read, write,
@@ -57,12 +58,13 @@ public class FileStoreTool implements Function<Map<String, Object>, Map<String, 
             var operation = FileOperation.parse(enrichedInput);
             FileValidator.validateOperation(operation);
             
-            return switch (operation.type()) {
-                case "read" -> FileSystemOperations.read(operation);
-                case "write" -> FileSystemOperations.write(operation);
-                case "list" -> FileSystemOperations.list(operation);
-                case "delete" -> FileSystemOperations.delete(operation);
-                default -> Map.of("error", "Unknown operation: " + operation.type());
+            var operationType = Operation.fromString(operation.type());
+            
+            return switch (operationType) {
+                case read -> FileSystemOperations.read(operation);
+                case write -> FileSystemOperations.write(operation);
+                case list -> FileSystemOperations.list(operation);
+                case delete -> FileSystemOperations.delete(operation);
             };
         } catch (Exception e) {
             return Map.of("error", e.getMessage());
