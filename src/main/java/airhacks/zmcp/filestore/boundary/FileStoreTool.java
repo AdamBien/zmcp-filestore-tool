@@ -17,7 +17,9 @@ import airhacks.zmcp.filestore.entity.Operation;
  */
 public class FileStoreTool implements Function<Map<String, Object>, Map<String, String>> {
     static Path STORAGE_ROOT = Path.of(Configuration.getStorageRoot());
-    
+    /**
+     * https://modelcontextprotocol.io/specification/2025-06-18/server/tools#listing-tools
+     */
     public static final Map<String, Object> TOOL_SPEC = Map.of(
         "name", "FileStoreTool",
         "description", "Local file storage operations - read, write, list, and delete files",
@@ -32,15 +34,37 @@ public class FileStoreTool implements Function<Map<String, Object>, Map<String, 
                     },
                     "fileName": {
                         "type": "string",
-                        "description": "Name of the file to operate on (required for read, write, and delete operations)"
+                        "description": "Name of the file to operate on"
                     },
                     "content": {
                         "type": "string",
-                        "description": "File content for write operations (required for write operation)"
+                        "description": "File content for write operations"
                     }
                 },
                 "required": ["operation"],
-                "additionalProperties": false
+                "additionalProperties": false,
+                "allOf": [
+                    {
+                        "if": {
+                            "properties": {
+                                "operation": { "enum": ["read", "write", "delete"] }
+                            }
+                        },
+                        "then": {
+                            "required": ["fileName"]
+                        }
+                    },
+                    {
+                        "if": {
+                            "properties": {
+                                "operation": { "const": "write" }
+                            }
+                        },
+                        "then": {
+                            "required": ["content"]
+                        }
+                    }
+                ]
             }
             """
     );
