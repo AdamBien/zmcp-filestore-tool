@@ -16,7 +16,8 @@ import airhacks.zmcp.filestore.entity.Operation;
  * list, and delete capabilities for files in a configured directory.
  */
 public class FileStoreTool implements Function<Map<String, Object>, Map<String, String>> {
-    static Path STORAGE_ROOT = Path.of(Configuration.getStorageRoot());
+    String VERSION = "FileStoreTool v2025.07.14.01";    
+    static Path STORAGE_ROOT = Configuration.getStorageRoot();
     public static final Map<String, Object> TOOL_SPEC = FileStoreToolSpec.SPEC;
     
     @Override
