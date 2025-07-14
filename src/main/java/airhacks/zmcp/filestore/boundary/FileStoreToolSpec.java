@@ -4,10 +4,16 @@ import java.util.Map;
 
 /**
  * MCP tool specification for FileStoreTool.
- * https://modelcontextprotocol.io/specification/2025-06-18/server/tools#listing-tools
+ * 
+ * @see <a href="https://modelcontextprotocol.io/specification/server/tools#listing-tools">MCP Tools Specification</a>
+ * @see <a href="https://json-schema.org/draft/2020-12/json-schema-validation#name-if-then-else">JSON Schema Conditional Validation</a>
  */
 public interface FileStoreToolSpec {
     
+    /**
+     * Tool specification following MCP (Model Context Protocol) format.
+     * Defines the tool's name, description, and input schema with conditional requirements.
+     */
     Map<String, Object> SPEC = Map.of(
         "name", "FileStoreTool",
         "description", "Local file storage operations - read, write, list, and delete files",
